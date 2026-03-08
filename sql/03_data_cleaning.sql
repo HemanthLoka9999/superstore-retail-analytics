@@ -2,6 +2,7 @@
 -- 03_data_cleaning // data_cleaning // etl_normalization_final.sql
 -- Fully automated insert + normalization for all production tables
 -- Handles deduplication, case standardization, and aggregation
+-- Source: Kaggle Superstore Dataset
 -- -----------------------------
 
 -- =========================
@@ -44,7 +45,7 @@ SELECT
     UPPER(TRIM(MIN(`Product Name`))),
     UPPER(TRIM(MIN(Category))),
     UPPER(TRIM(MIN(`Sub-Category`))),
-    ROUND(MIN(Sales / Quantity), 2) AS UnitPrice
+    ROUND(MIN(Sales / NULLIF(Quantity,0)), 2) AS UnitPrice
 FROM superstore_raw
 GROUP BY `Product ID`;
 
@@ -93,6 +94,7 @@ GROUP BY `Order ID`, `Product ID`;
 -- =========================
 -- Post-Insertion Normalization
 -- =========================
+
 -- Customers
 UPDATE customers
 SET
