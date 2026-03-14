@@ -1,173 +1,186 @@
+<<<<<<< HEAD
 # **Superstore Retail Analytics Project (SQL + Python)**
 =======
+=======
+# Superstore Retail Analytics (SQL + Python)
+plots/monthly_revenue.png
+![plots](monthly_revenue.png)
+>>>>>>> 5f1afa1 (updated Readme)
 
-## **Overview**
+## Overview
 
-This project builds a **retail analytics pipeline** using the Superstore dataset.
-The raw dataset is first loaded into a staging table and then transformed into a **normalized relational schema** to support analytical queries and business insights.
+This project analyzes retail sales data using **SQL and Python** to understand revenue trends, product performance, customer behavior, and the impact of discounts on profitability.
 
-It demonstrates **data ingestion, cleaning, relational schema design, SQL analytics, and Python-based visualization**.
+The workflow simulates a real-world analytics pipeline where raw transactional data is ingested, cleaned, transformed into a normalized relational schema, and then analyzed using SQL queries and Python visualizations.
 
-Database used: **`superstore_analytics`**
-
----
-
-## **Dataset**
-
-* Source: Kaggle Superstore Dataset
-* Total Records: **9,994 rows**
-* Contains retail transaction information including customers, orders, products, sales, discounts, and profit.
+Database used: **MySQL (superstore_analytics)**
 
 ---
 
-## **Data Pipeline**
+## Dataset
+
+Source: Kaggle – Superstore Dataset
+
+- Total records: 9,994
+- Contains transactional retail sales data including:
+  - Customer information
+  - Orders and shipping details
+  - Products and categories
+  - Sales, discounts, and profit
+
+The dataset is widely used for **retail analytics and sales performance analysis**.
+
+---
+
+## Data Pipeline
 
 ```
+
 Superstore.csv
-      ↓
+↓
 superstore_raw (staging table)
-      ↓
+↓
 Data Cleaning & Transformation
-      ↓
+↓
 Normalized Tables
+
 ```
 
-Final tables:
+Final tables created:
 
-* `customers` – Customer master data
-* `orders` – Order-level information
-* `products` – Product catalog
-* `order_items` – Transaction-level sales, discount, and profit
+- **customers** – customer master data
+- **orders** – order-level information
+- **products** – product catalog
+- **order_items** – transaction-level sales data
 
----
-
-## **Database Tables**
-
-### `superstore_raw`
-
-Staging table containing raw dataset before transformation.
-Used for initial loading, validation, and transformation.
-
-### `customers`
-
-Stores customer information. Columns include:
-
-* Customer ID, Customer Name, Segment, Country, City, State, Postal Code, Region
-
-### `orders`
-
-Stores order-level details. Columns include:
-
-* Order ID, Customer ID, Order Date, Ship Date, Ship Mode, Region
-
-### `products`
-
-Stores product catalog. Columns include:
-
-* Product ID, Product Name, Category, Sub-Category, UnitPrice
-
-### `order_items`
-
-Stores transaction-level sales information. Columns include:
-
-* Order ID, Product ID, Quantity, Sales, Discount, Profit
+This structure enables efficient analytical queries.
 
 ---
 
-## **Data Processing Steps**
+## Data Processing Steps
 
-* Load raw CSV into `superstore_raw`
-* Clean and standardize data fields
-* Remove duplicates
-* Normalize into relational tables
-* Create relationships between tables
-* Perform validation checks to ensure data integrity
+- Load raw CSV into `superstore_raw`
+- Clean and standardize data fields
+- Remove duplicates
+- Normalize data into relational tables
+- Create table relationships
+- Run validation checks for data integrity
 
 ---
 
-## **SQL Analytics**
+## SQL Analytics
 
 Key analyses performed:
 
-* Monthly revenue trend and month-over-month growth
-* Revenue and profit by region
-* Top products by revenue
-* Category and sub-category sales contribution
-* Discount distribution analysis
-* Customer lifetime revenue
-* Market basket analysis (products frequently bought together)
+- Monthly revenue trend and month-over-month growth
+- Revenue and profit by region
+- Category and sub-category sales contribution
+- Top products by revenue
+- Discount distribution analysis
+- Customer lifetime revenue
+- Market basket analysis (products frequently bought together)
 
-Techniques demonstrated:
+SQL techniques used:
 
-* Joins, Aggregations, Window functions, CTEs, Self-joins
-* Analytical percentage calculations
-
----
-
-## **Python Analysis & Visualizations**
-
-All Python analysis is performed in Jupyter notebooks.
-Tables are loaded from MySQL using SQLAlchemy and stored in pandas DataFrames.
-
-### **Notebooks**
-
-* `01_data_loading.ipynb` – Connects to MySQL, loads tables, and executes SQL queries into DataFrames.
-* `02_analysis_visualization.ipynb` – Creates visualizations using Matplotlib and Seaborn.
-
-### **Visualizations Created**
-
-1. Monthly Revenue Trend – Line plot
-2. Category & Sub-Category Revenue – Bar plot
-3. Discount vs Profit Margin – Scatter plot
-4. Revenue Distribution per Customer – Histogram
-5. Top Product Pairs Bought Together – Heatmap
-6. Customer Order Frequency – Histogram
-
-All plots are saved in the **`plots/` folder** in the repo.
+- Joins
+- Aggregations
+- Window functions
+- CTEs
+- Self joins
+- Analytical percentage calculations
 
 ---
 
-## **Technologies Used**
+## Python Analysis & Visualizations
 
-* **MySQL**
-* **SQL**
-* **Python**
-* **Pandas**
-* **Matplotlib**
-* **Seaborn**
-* **Jupyter Notebook**
+Python was used for exploratory analysis and visualization.
+
+Notebooks:
+
+- **01_data_loading.ipynb** – Loads data from MySQL into pandas DataFrames
+- **02_analysis_visualization.ipynb** – Performs analysis and creates visualizations
+
+Libraries used:
+
+- Pandas
+- NumPy
+- Matplotlib
+- Seaborn
 
 ---
 
-## **Project Structure**
+## Visualizations
+
+Visualizations generated during analysis include:
+
+- Monthly Revenue Trend
+- Category & Sub-Category Revenue
+- Discount vs Profit Relationship
+- Revenue Distribution per Customer
+- Customer Order Frequency
+- Product Pair Analysis
+
+All visual outputs are stored in the **plots/** folder.
+
+---
+
+## Key Insights
+
+- A small number of product categories contribute a large share of total revenue.
+- Higher discount levels often correlate with reduced profit margins.
+- Revenue distribution shows many low-value purchases and a smaller number of high-value transactions.
+- Customer purchasing patterns indicate that a small segment of customers generates a significant portion of sales.
+
+---
+
+## Technologies Used
+
+- MySQL
+- SQL
+- Python
+- Pandas
+- NumPy
+- Matplotlib
+- Seaborn
+- Jupyter Notebook
+
+---
+
+## Project Structure
 
 ```
-retail-analytics-sql/
-├── data/
-│   └── Superstore.csv
-├── sql/
-│   ├── 01_schema_design.sql
-│   ├── 02_data_loading.sql
-│   ├── 03_data_ingestion_and_cleaning.sql
-│   ├── 04_validation_checks.sql
-│   └── 05_kpi_analysis.sql
-├── python/
-│   ├── 01_data_loading.ipynb
-│   └── 02_analysis_visualization.ipynb
-├── plots/
-│   ├── monthly_revenue.png
-│   ├── category_revenue.png
-│   ├── discount_vs_profit.png
-│   ├── revenue_distribution.png
-│   ├── product_pairs_heatmap.png
-│   └── customer_order_frequency.png
+
+superstore-retail-analytics
+│
+├── data
+│ └── Superstore.csv
+│
+├── sql
+│ ├── 01_schema_design.sql
+│ ├── 02_data_loading.sql
+│ ├── 03_data_ingestion_and_cleaning.sql
+│ ├── 04_validation_checks.sql
+│ └── 05_kpi_analysis.sql
+│
+├── python
+│ ├── 01_data_loading.ipynb
+│ └── 02_analysis_visualization.ipynb
+│
+├── plots
+│ ├── monthly_revenue.png
+│ ├── category_revenue.png
+│ ├── discount_vs_profit.png
+│ ├── revenue_distribution.png
+│ ├── product_pairs_heatmap.png
+│ └── customer_order_frequency.png
+│
 └── README.md
+
 ```
-
 ---
 
-## **Objective**
+## Objective
 
-Simulate a **real-world retail analytics workflow**, from raw data ingestion to **business insights using SQL**, extended with **Python-based visualizations** for interpretation and decision-making.
+The objective of this project is to demonstrate how **SQL-based data modeling and analytics can be combined with Python visualization to extract meaningful insights from retail sales data and support data-driven decision making.**
 
----
+```
