@@ -1,96 +1,72 @@
 /* ============================================================
 RETAIL SALES ANALYTICS PROJECT
 Author: Hemanth Loka
-
-Tables Used:
-- customers
-- orders
-- order_items
-- products
-
-Techniques Used:
-- Joins
-- Aggregations
-- Window Functions
-- CTEs
-- Self Joins
-- Date Functions
-- CASE Expressions
 ============================================================ */
 
 
 /* ============================================================
 1. MONTHLY REVENUE TREND
-Business Question:
-How does revenue change month-by-month?
 ============================================================ */
 
 SELECT 
-DATE_FORMAT(o.`Order Date`, '%Y-%m') AS year_month,
+DATE_FORMAT(o.`Order Date`, '%Y-%m') AS `year_month`,
 ROUND(SUM(oi.Sales),2) AS revenue
 FROM orders o
 JOIN order_items oi
 ON o.`Order ID` = oi.`Order ID`
-GROUP BY year_month
-ORDER BY year_month;
+GROUP BY `year_month`
+ORDER BY `year_month`;
 
 
 
 /* ============================================================
 2. MONTH-OVER-MONTH REVENUE GROWTH
-Business Question:
-What is the growth rate compared to the previous month?
 ============================================================ */
 
 WITH monthly_revenue AS
 (
-SELECT 
-DATE_FORMAT(o.`Order Date`, '%Y-%m') AS year_month,
-SUM(oi.Sales) AS revenue
-FROM orders o
-JOIN order_items oi
-ON o.`Order ID` = oi.`Order ID`
-GROUP BY year_month
+    SELECT 
+        DATE_FORMAT(o.`Order Date`, '%Y-%m') AS `year_month`,
+        SUM(oi.Sales) AS revenue
+    FROM orders o
+    JOIN order_items oi
+        ON o.`Order ID` = oi.`Order ID`
+    GROUP BY `year_month`
 ),
 
 revenue_with_lag AS
 (
-SELECT
-year_month,
-revenue,
-LAG(revenue) OVER (ORDER BY year_month) AS previous_month_revenue
-FROM monthly_revenue
+    SELECT
+        `year_month`,
+        revenue,
+        LAG(revenue) OVER (ORDER BY `year_month`) AS previous_month_revenue
+    FROM monthly_revenue
 )
 
 SELECT
-year_month,
-revenue,
-previous_month_revenue,
-ROUND(
-(revenue - previous_month_revenue) /
-previous_month_revenue * 100
-,2) AS mom_growth_pct
+    `year_month`,
+    revenue,
+    previous_month_revenue,
+    ROUND(
+        (revenue - IFNULL(previous_month_revenue, revenue)) /
+        IFNULL(previous_month_revenue, revenue) * 100
+    ,2) AS mom_growth_pct
 FROM revenue_with_lag
-ORDER BY year_month;
-
+ORDER BY `year_month`;
 
 
 /* ============================================================
-3. AVERAGE ORDER VALUE (AOV) & UNITS PER TRANSACTION
-Business Question:
-How much revenue does an average order generate?
+3. AVERAGE ORDER VALUE (AOV) PER CUSTOMER
 ============================================================ */
 
-SELECT
-DATE_FORMAT(o.`Order Date`, '%Y-%m') AS year_month,
-ROUND(SUM(oi.Sales) / COUNT(DISTINCT o.`Order ID`),2) AS avg_order_value,
-ROUND(COUNT(oi.`Product ID`) / COUNT(DISTINCT o.`Order ID`),2) AS units_per_transaction
+SELECT 
+o.`Customer ID`,
+ROUND(SUM(oi.Sales) / COUNT(DISTINCT o.`Order ID`),2) AS avg_order_value_per_customer
 FROM orders o
 JOIN order_items oi
 ON o.`Order ID` = oi.`Order ID`
-GROUP BY year_month
-ORDER BY year_month;
-
+GROUP BY o.`Customer ID`
+ORDER BY avg_order_value_per_customer DESC;
 
 
 /* ============================================================
@@ -184,8 +160,6 @@ ORDER BY category_pct_of_overall DESC;
 
 /* ============================================================
 8. DISCOUNT IMPACT ON PROFIT
-Business Question:
-How do discount levels affect profit margin?
 ============================================================ */
 
 SELECT
@@ -207,7 +181,7 @@ ORDER BY profit_margin_pct DESC;
 
 
 /* ============================================================
-9. CUSTOMER LIFETIME VALUE (TOP CUSTOMERS)
+9. CUSTOMER LIFETIME VALUE
 ============================================================ */
 
 SELECT 
@@ -226,8 +200,6 @@ LIMIT 10;
 
 /* ============================================================
 10. MARKET BASKET ANALYSIS
-Business Question:
-Which products are frequently bought together?
 ============================================================ */
 
 WITH product_pairs AS (
