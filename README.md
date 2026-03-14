@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-# **Superstore Retail Analytics Project (SQL + Python)**
-=======
-=======
 # Superstore Retail Analytics (SQL + Python)
 plots/monthly_revenue.png
 ![plots](monthly_revenue.png)
->>>>>>> 5f1afa1 (updated Readme)
 
 ## Overview
 
